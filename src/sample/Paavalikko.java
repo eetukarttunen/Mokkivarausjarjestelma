@@ -1,8 +1,11 @@
 package sample;
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+
+/**
+ * Päävalikko- luokka
+ * Tekijä Eetu Karttunen
+ * github @EetuKarttunen
+ * V.2020
+ * */
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

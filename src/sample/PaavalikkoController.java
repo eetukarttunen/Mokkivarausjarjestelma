@@ -1,8 +1,11 @@
 package sample;
 
 /**
- * Eetu Karttunen
  * Päävalikon Controller- luokka
+ * Tekijä Eetu Karttunen
+ * github @EetuKarttunen
+ * V.2020
+ *
  */
 
 import java.io.IOException;

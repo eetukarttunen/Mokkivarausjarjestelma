@@ -1,9 +1,11 @@
 package sample;
 
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+/**
+ * Asiakas Controller- luokka
+ * Tekijä Eetu Karttunen
+ * github @EetuKarttunen
+ * V.2020
+ * */
 
 import java.net.URL;
 import java.sql.Connection;
