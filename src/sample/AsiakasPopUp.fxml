@@ -57,34 +57,34 @@
          <left>
             <AnchorPane prefHeight="704.0" prefWidth="461.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="osoite" layoutX="254.0" layoutY="332.0" />
+                  <TextField fx:id="osoite" layoutX="228.0" layoutY="327.0" translateY="5.0" />
                   <Label layoutX="121.0" layoutY="330.0" prefHeight="30.0" prefWidth="82.0" text="Osoite">
                      <font>
                         <Font name="Yu Gothic UI Light" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="114.0" layoutY="201.0" prefHeight="36.0" prefWidth="121.0" text="AsiakasID">
+                  <Label layoutX="95.0" layoutY="201.0" prefHeight="36.0" prefWidth="121.0" text="Asiakastunnus">
                      <font>
                         <Font name="Yu Gothic UI Light" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="asiakasID" layoutX="254.0" layoutY="206.0" />
-                  <Button layoutX="442.0" layoutY="203.0" mnemonicParsing="false" onAction="#hae_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #3a1775; -fx-background-radius: 5em;" text="Hae" textFill="WHITE" />
+                  <TextField fx:id="asiakasID" layoutX="228.0" layoutY="201.0" translateY="5.0" />
+                  <Button layoutX="442.0" layoutY="203.0" mnemonicParsing="false" onAction="#hae_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: #3a1775; -fx-background-radius: 5em;" text="Hae" textFill="WHITE" translateY="5.0" />
                   <Label layoutX="120.0" layoutY="247.0" prefHeight="30.0" prefWidth="70.0" text="Etunimi">
                      <font>
                         <Font name="Yu Gothic UI Light" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="etunimi" layoutX="254.0" layoutY="249.0" />
-                  <Button layoutX="442.0" layoutY="246.0" mnemonicParsing="false" onAction="#lisaa_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: white; -fx-border-radius: 5em; -fx-border-color: #3a1775;" text="Lisää" textFill="#3a1775" />
+                  <TextField fx:id="etunimi" layoutX="228.0" layoutY="244.0" translateY="5.0" />
+                  <Button layoutX="442.0" layoutY="246.0" mnemonicParsing="false" onAction="#lisaa_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: white; -fx-border-radius: 5em; -fx-border-color: #3a1775;" text="Lisää" textFill="#3a1775" translateY="5.0" />
                   <Label layoutX="114.0" layoutY="291.0" prefHeight="30.0" prefWidth="82.0" text="Sukunimi">
                      <font>
                         <Font name="Yu Gothic UI Light" size="20.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="sukunimi" layoutX="254.0" layoutY="293.0" />
-                  <Button layoutX="442.0" layoutY="290.0" mnemonicParsing="false" onAction="#muuta_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: white; -fx-border-radius: 5em; -fx-border-color: #3a1775;" text="Muuta" textFill="#391773" />
-                  <Button layoutX="442.0" layoutY="329.0" mnemonicParsing="false" onAction="#poista_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-border-color: #3a1775; -fx-background-color: white; -fx-border-radius: 5em;" text="Poista" textFill="#3a1775" />
+                  <TextField fx:id="sukunimi" layoutX="228.0" layoutY="288.0" translateY="5.0" />
+                  <Button layoutX="442.0" layoutY="290.0" mnemonicParsing="false" onAction="#muuta_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-background-color: white; -fx-border-radius: 5em; -fx-border-color: #3a1775;" text="Muuta" textFill="#391773" translateY="5.0" />
+                  <Button layoutX="442.0" layoutY="329.0" mnemonicParsing="false" onAction="#poista_tiedotO" prefHeight="31.0" prefWidth="80.0" style="-fx-border-color: #3a1775; -fx-background-color: white; -fx-border-radius: 5em;" text="Poista" textFill="#3a1775" translateY="5.0" />
                   <Label layoutX="120.0" layoutY="63.0" prefHeight="55.0" prefWidth="435.0" text="Asiakashallintajärjestelmä">
                      <font>
                         <Font name="Yu Gothic UI Light" size="38.0" />

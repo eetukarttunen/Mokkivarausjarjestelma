@@ -39,10 +39,10 @@ public class PaavalikkoController implements Initializable {
 
     @FXML
     public void naytaToimipisteet(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(this.getClass().getResource("ToimipistePopuptest.fxml"));
+        Parent root = FXMLLoader.load(this.getClass().getResource("ToimipistePopUp.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Toimipisteiden hallinta");
-        stage.setMaximized(true);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -86,7 +86,7 @@ public class PaavalikkoController implements Initializable {
         Parent root = FXMLLoader.load(this.getClass().getResource("LaskutPopup.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Laskujen hallinta ja seuranta");
-        stage.setMaximized(true);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();

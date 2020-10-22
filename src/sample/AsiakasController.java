@@ -1,12 +1,12 @@
 package sample;
 
-/**
- * Asiakas Controller- luokka
- * Tekijä Eetu Karttunen
- * github @EetuKarttunen
- * V.2020
- * */
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,451 +15,385 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ *
+ * @author eetuk
+ */
 public class AsiakasController implements Initializable {
     protected Connection m_conn;
-    protected Asiakas m_asiakas = new Asiakas();
+    protected Asiakas m_asiakas  = new Asiakas ();
+
     @FXML
     protected TextField asiakasID;
+
     @FXML
     protected TextField etunimi;
+
     @FXML
     protected TextField sukunimi;
+
     @FXML
     protected TextField osoite;
-    @FXML
-    public Button closeButton;
-
-    public AsiakasController() {
-    }
 
     public void hae_tiedotO() {
-        this.m_asiakas = null;
+        // haetaan tietokannasta Asiakasa, jonka Asiakas_id = txtAsiakasID
+        m_asiakas = null;
+        //ArrayList <Suoritus> lstSuoritukset = null;
 
-        Alert alert;
         try {
-            this.m_asiakas = Asiakas.haeAsiakas(this.m_conn, Integer.parseInt(this.asiakasID.getText()));
-        } catch (SQLException var3) {
-            alert = new Alert(AlertType.ERROR);
+            m_asiakas = Asiakas.haeAsiakas (m_conn, Integer.parseInt(asiakasID.getText()));
+        } catch (SQLException se) {
+            // SQL virheet
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Asiakkaan tietojen hakeminen");
             alert.setHeaderText("Virhe");
             alert.setContentText("Asiakasta ei löydy.");
             alert.showAndWait();
-        } catch (Exception var4) {
-            alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Asiakkaan tietojen hakeminen");
-            alert.setHeaderText("Virhe");
-            alert.setContentText("Asiakasta ei löydy.");
-            alert.showAndWait();
-        }
 
-        if (this.m_asiakas.getEtunimi() == null) {
-            this.etunimi.setText("");
-            this.sukunimi.setText("");
-            this.osoite.setText("");
-            Alert alert1 = new Alert(AlertType.ERROR);
-            alert1.setTitle("Asiakkaan tietojen hakeminen");
-            alert1.setHeaderText("Virhe");
-            alert1.setContentText("Asiakasta ei löydy.");
-            alert1.showAndWait();
-        } else {
-            this.etunimi.setText(this.m_asiakas.getEtunimi());
-            this.sukunimi.setText(this.m_asiakas.getSukunimi());
-            this.osoite.setText(this.m_asiakas.getOsoite());
+        } catch (Exception e) {
+            // muut virheet
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen hakeminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Asiakasta ei löydy.");
+            alert.showAndWait();
+
+        }
+        if (m_asiakas.getEtunimi() == null) {
+            // muut virheet
+            etunimi.setText("");
+            sukunimi.setText("");
+            osoite.setText("");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen hakeminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Asiakasta ei löydy.");
+            alert.showAndWait();
+
+        }
+        else
+        {
+            // naytetaan tiedot
+            etunimi.setText(m_asiakas.getEtunimi());
+            sukunimi.setText(m_asiakas.getSukunimi());
+            osoite.setText(m_asiakas.getOsoite());
+
         }
 
     }
 
-    public void lisaa_tiedotO() {
-        boolean palvelu_lisatty = true;
-        this.m_asiakas = null;
 
-        Alert alert;
+    public  void lisaa_tiedotO() {
+        boolean palvelu_lisatty = true;
+        m_asiakas = null;
         try {
-            this.m_asiakas = Asiakas.haeAsiakas(this.m_conn, Integer.parseInt(this.asiakasID.getText()));
-        } catch (SQLException var12) {
+            m_asiakas = Asiakas.haeAsiakas (m_conn, Integer.parseInt(asiakasID.getText()));
+        } catch (SQLException se) {
+            // SQL virheet
             palvelu_lisatty = false;
-            var12.printStackTrace();
-            alert = new Alert(AlertType.ERROR);
+            se.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Asiakkaan tietojen lisääminen");
             alert.setHeaderText("Tietokantavirhe");
             alert.setContentText("Asiakkaan tietojen lisääminen ei onnistu.");
             alert.showAndWait();
-        } catch (Exception var13) {
+
+        } catch (Exception e) {
+            // muut virheet
             palvelu_lisatty = false;
-            var13.printStackTrace();
-            alert = new Alert(AlertType.ERROR);
+            e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Asiakkaan tietojen lisääminen");
             alert.setHeaderText("Tietokantavirhe");
             alert.setContentText("Asiakkaan tietojen lisääminen ei onnistu.");
             alert.showAndWait();
         }
-
-        Alert alert2;
-        if (this.m_asiakas.getEtunimi() != null) {
+        if (m_asiakas.getEtunimi() != null) {
+            // Asiakas jo olemassa, näytetään tiedot
             palvelu_lisatty = false;
-            this.etunimi.setText(this.m_asiakas.getEtunimi());
-            this.sukunimi.setText(this.m_asiakas.getSukunimi());
-            this.osoite.setText(this.m_asiakas.getOsoite());
-            alert2 = new Alert(AlertType.ERROR);
-            alert2.setTitle("Asiakkaan tietojen lisääminen");
-            alert2.setHeaderText("Virhe");
-            alert2.setContentText("Asiakas on jo olemassa.");
-            alert2.showAndWait();
-        } else {
-            this.m_asiakas.setAsiakasId(Integer.parseInt(this.asiakasID.getText()));
-            this.m_asiakas.setEtunimi(this.etunimi.getText());
-            this.m_asiakas.setSukunimi(this.sukunimi.getText());
-            this.m_asiakas.setOsoite(this.osoite.getText());
-            boolean var11 = false;
+            etunimi.setText(m_asiakas.getEtunimi());
+            sukunimi.setText(m_asiakas.getSukunimi());
+            osoite.setText(m_asiakas.getOsoite());
 
-            label112: {
-                label113: {
-                    try {
-                        var11 = true;
-                        this.m_asiakas.lisaaAsiakas(this.m_conn);
-                        var11 = false;
-                        break label112;
-                    } catch (SQLException var14) {
-                        palvelu_lisatty = false;
-                        alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Asiakkaan tietojen lisääminen");
-                        alert.setHeaderText("Tietokantavirhe");
-                        alert.setContentText("Asiakas tietojen lisääminen ei onnistu.");
-                        alert.showAndWait();
-                        var14.printStackTrace();
-                        var11 = false;
-                    } catch (Exception var15) {
-                        palvelu_lisatty = false;
-                        alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Asiakkaan tietojen lisääminen");
-                        alert.setHeaderText("Tietokantavirhe");
-                        alert.setContentText("Asiakkaan tietojen lisääminen ei onnistu.");
-                        alert.showAndWait();
-                        var15.printStackTrace();
-                        var11 = false;
-                        break label113;
-                    } finally {
-                        if (var11) {
-                            if (palvelu_lisatty) {
-                                Alert alert3 = new Alert(AlertType.INFORMATION);
-                                alert3.setTitle("Asiakkaan tietojen lisääminen");
-                                alert3.setHeaderText("Toiminto OK.");
-                                alert3.setContentText("Asiakkaan tiedot lisätty tietokantaan.");
-                                alert3.showAndWait();
-                            }
 
-                        }
-                    }
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen lisääminen");
+            alert.setHeaderText("Virhe");
+            alert.setContentText("Asiakas on jo olemassa.");
+            alert.showAndWait();
 
-                    if (palvelu_lisatty) {
-                        alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Asiakkaan tietojen lisääminen");
-                        alert.setHeaderText("Toiminto OK.");
-                        alert.setContentText("Asiakkaan tiedot lisätty tietokantaan.");
-                        alert.showAndWait();
-                    }
+        }
+        else
+        {
+            // asetetaan tiedot oliolle
+            m_asiakas.setAsiakasId(Integer.parseInt(asiakasID.getText()));
+            m_asiakas.setEtunimi(etunimi.getText());
+            m_asiakas.setSukunimi(sukunimi.getText());
+            m_asiakas.setOsoite(osoite.getText());
 
-                    return;
-                }
+            try {
+                // yritetään kirjoittaa kantaan
+                m_asiakas.lisaaAsiakas (m_conn);
+            } catch (SQLException se) {
+                // SQL virheet
+                palvelu_lisatty = false;
 
-                if (palvelu_lisatty) {
-                    alert = new Alert(AlertType.INFORMATION);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Asiakkaan tietojen lisääminen");
+                alert.setHeaderText("Tietokantavirhe");
+                alert.setContentText("Asiakas tietojen lisääminen ei onnistu.");
+                alert.showAndWait();
+
+                se.printStackTrace();
+            } catch (Exception e) {
+                // muut virheet
+                palvelu_lisatty = false;
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Asiakkaan tietojen lisääminen");
+                alert.setHeaderText("Tietokantavirhe");
+                alert.setContentText("Asiakkaan tietojen lisääminen ei onnistu.");
+                alert.showAndWait();
+
+                e.printStackTrace();
+            }finally {
+                if (palvelu_lisatty == true) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Asiakkaan tietojen lisääminen");
                     alert.setHeaderText("Toiminto OK.");
                     alert.setContentText("Asiakkaan tiedot lisätty tietokantaan.");
                     alert.showAndWait();
+
                 }
-
-                return;
             }
 
-            if (palvelu_lisatty) {
-                alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Asiakkaan tietojen lisääminen");
-                alert.setHeaderText("Toiminto OK.");
-                alert.setContentText("Asiakkaan tiedot lisätty tietokantaan.");
-                alert.showAndWait();
-            }
         }
 
     }
 
     public void muuta_tiedotO() {
         boolean asiakas_muutettu = true;
-        this.m_asiakas.setEtunimi(this.etunimi.getText());
-        this.m_asiakas.setSukunimi(this.sukunimi.getText());
-        this.m_asiakas.setOsoite(this.osoite.getText());
-        boolean var9 = false;
+        // asetetaan tiedot oliolle
+        m_asiakas.setEtunimi(etunimi.getText());
+        m_asiakas.setSukunimi(sukunimi.getText());
+        m_asiakas.setOsoite(osoite.getText());
 
-        Alert alert;
-        label88: {
-            label89: {
-                try {
-                    Alert alert4;
-                    try {
-                        var9 = true;
-                        this.m_asiakas.muutaAsiakas(this.m_conn);
-                        var9 = false;
-                        break label88;
-                    } catch (SQLException var10) {
-                        asiakas_muutettu = false;
-                        alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Asiakkaan tietojen muuttaminen");
-                        alert.setHeaderText("Tietokantavirhe");
-                        alert.setContentText("Asiakkaan tietojen muuttaminen ei onnistu.");
-                        alert.showAndWait();
-                        var10.printStackTrace();
-                        var9 = false;
-                    } catch (Exception var11) {
-                        asiakas_muutettu = false;
-                        alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Asiakkaan tietojen muuttaminen");
-                        alert.setHeaderText("Tietokantavirhe");
-                        alert.setContentText("Asiakkaan tietojen muuttaminen ei onnistu.");
-                        alert.showAndWait();
-                        var11.printStackTrace();
-                        var9 = false;
-                        break label89;
-                    }
-                } finally {
-                    if (var9) {
-                        if (asiakas_muutettu) {
-                            Alert alert5 = new Alert(AlertType.INFORMATION);
-                            alert5.setTitle("Asiakkaan tietojen muuttaminen");
-                            alert5.setHeaderText("Toiminto OK.");
-                            alert5.setContentText("Asiakkaan tiedot muutettu tietokantaan.");
-                            alert5.showAndWait();
-                        }
 
-                    }
-                }
+        try {
+            // yritetään muuttaa (UPDATE) tiedot kantaan
+            m_asiakas.muutaAsiakas (m_conn);
+        } catch (SQLException se) {
+            // SQL virheet
+            asiakas_muutettu = false;
 
-                if (asiakas_muutettu) {
-                    alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Asiakkaan tietojen muuttaminen");
-                    alert.setHeaderText("Toiminto OK.");
-                    alert.setContentText("Asiakkaan tiedot muutettu tietokantaan.");
-                    alert.showAndWait();
-                }
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen muuttaminen");
+            alert.setHeaderText("Tietokantavirhe");
+            alert.setContentText("Asiakkaan tietojen muuttaminen ei onnistu.");
+            alert.showAndWait();
 
-                return;
-            }
+            se.printStackTrace();
+        } catch (Exception e) {
+            // muut virheet
+            asiakas_muutettu = false;
 
-            if (asiakas_muutettu) {
-                alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen muuttaminen");
+            alert.setHeaderText("Tietokantavirhe");
+            alert.setContentText("Asiakkaan tietojen muuttaminen ei onnistu.");
+            alert.showAndWait();
+
+            e.printStackTrace();
+        } finally {
+            if (asiakas_muutettu == true) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Asiakkaan tietojen muuttaminen");
                 alert.setHeaderText("Toiminto OK.");
                 alert.setContentText("Asiakkaan tiedot muutettu tietokantaan.");
                 alert.showAndWait();
+
             }
-
-            return;
-        }
-
-        if (asiakas_muutettu) {
-            alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Asiakkaan tietojen muuttaminen");
-            alert.setHeaderText("Toiminto OK.");
-            alert.setContentText("Asiakkaan tiedot muutettu tietokantaan.");
-            alert.showAndWait();
         }
 
     }
 
     public void poista_tiedotO() {
-        this.m_asiakas = null;
+        // haetaan tietokannasta Asiakasa, jonka Asiakas_id = txtAsiakasID
+        m_asiakas = null;
         boolean Asiakas_poistettu = false;
 
-        Alert alert;
         try {
-            this.m_asiakas = Asiakas.haeAsiakas(this.m_conn, Integer.parseInt(this.asiakasID.getText()));
-        } catch (SQLException var12) {
-            alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Asiakkaan tietojen poistaminen");
-            alert.setHeaderText("Tietokantavirhe");
-            alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
-            alert.showAndWait();
-            var12.printStackTrace();
-        } catch (Exception var13) {
-            alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Asiakkaan tietojen poistaminen");
-            alert.setHeaderText("Tietokantavirhe");
-            alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
-            alert.showAndWait();
-            var13.printStackTrace();
-        }
+            m_asiakas = Asiakas.haeAsiakas (m_conn, Integer.parseInt(asiakasID.getText()));
+        } catch (SQLException se) {
+            // SQL virheet
 
-        Alert alert1;
-        if (this.m_asiakas.getEtunimi() == null) {
-            this.etunimi.setText("");
-            this.sukunimi.setText("");
-            this.osoite.setText("");
-            alert = new Alert(AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen poistaminen");
+            alert.setHeaderText("Tietokantavirhe");
+            alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
+            alert.showAndWait();
+
+            se.printStackTrace();
+        } catch (Exception e) {
+            // muut virheet
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen poistaminen");
+            alert.setHeaderText("Tietokantavirhe");
+            alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
+            alert.showAndWait();
+
+            e.printStackTrace();
+        }
+        if (m_asiakas.getEtunimi() == null) {
+            // poistettavaa Asiakasta ei lÃ¶ydy tietokannasta, tyhjennetÃ¤Ã¤n tiedot nÃ¤ytÃ¶ltÃ¤
+            etunimi.setText("");
+            sukunimi.setText("");
+            osoite.setText("");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Asiakkaan tietojen poisto");
             alert.setHeaderText("Virhe");
             alert.setContentText("Asiakasta ei löydy.");
             alert.showAndWait();
-        } else {
-            this.etunimi.setText(this.m_asiakas.getEtunimi());
-            this.sukunimi.setText(this.m_asiakas.getSukunimi());
-            this.osoite.setText(this.m_asiakas.getOsoite());
-            boolean var11 = false;
 
-            label121: {
-                label122: {
-                    try {
-                        var11 = true;
-                        alert = new Alert(AlertType.CONFIRMATION);
-                        alert.setTitle("Asiakkaan tietojen poisto");
-                        alert.setHeaderText("Vahvista");
-                        alert.setContentText("Haluatko todella poistaa Asiakkaan?");
-                        Optional<ButtonType> vastaus = alert.showAndWait();
-                        if (vastaus.get() == ButtonType.OK) {
-                            this.m_asiakas.poistaAsiakas(this.m_conn);
-                            Asiakas_poistettu = true;
-                            var11 = false;
-                        } else {
-                            var11 = false;
-                        }
-                        break label121;
-                    } catch (SQLException var14) {
-                        alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Asiakkaan tietojen poisto");
-                        alert.setHeaderText("Results:");
-                        alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
-                        alert.showAndWait();
-                        var14.printStackTrace();
-                        var11 = false;
-                    } catch (Exception var15) {
-                        alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Asiakkaan tietojen poisto");
-                        alert.setHeaderText("Results:");
-                        alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
-                        alert.showAndWait();
-                        var15.printStackTrace();
-                        var11 = false;
-                        break label122;
-                    } finally {
-                        if (var11) {
-                            if (Asiakas_poistettu) {
-                                this.asiakasID.setText("");
-                                this.etunimi.setText("");
-                                this.sukunimi.setText("");
-                                this.osoite.setText("");
-                                Alert alert6 = new Alert(AlertType.INFORMATION);
-                                alert6.setTitle("Asiakkaan tietojen poisto");
-                                alert6.setHeaderText("Results:");
-                                alert6.setContentText("Asiakkaan tiedot poistettu tietokannasta.");
-                                alert6.showAndWait();
-                                this.m_asiakas = null;
-                            }
+            return; // poistutaan
+        }
+        else
+        {
+            // näytetään poistettavan asiakkaan tiedot
+            etunimi.setText(m_asiakas.getEtunimi());
+            sukunimi.setText(m_asiakas.getSukunimi());
+            osoite.setText(m_asiakas.getOsoite());
+        }
+        try {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Asiakkaan tietojen poisto");
+            alert.setHeaderText("Vahvista");
+            alert.setContentText("Haluatko todella poistaa Asiakkaan?");
 
-                        }
-                    }
+            Optional<ButtonType> vastaus = alert.showAndWait();
 
-                    if (Asiakas_poistettu) {
-                        this.asiakasID.setText("");
-                        this.etunimi.setText("");
-                        this.sukunimi.setText("");
-                        this.osoite.setText("");
-                        alert = new Alert(AlertType.INFORMATION);
-                        alert.setTitle("Asiakkaan tietojen poisto");
-                        alert.setHeaderText("Results:");
-                        alert.setContentText("Asiakkaan tiedot poistettu tietokannasta.");
-                        alert.showAndWait();
-                        this.m_asiakas = null;
-                    }
-
-                    return;
-                }
-
-                if (Asiakas_poistettu) {
-                    this.asiakasID.setText("");
-                    this.etunimi.setText("");
-                    this.sukunimi.setText("");
-                    this.osoite.setText("");
-                    alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Asiakkaan tietojen poisto");
-                    alert.setHeaderText("Results:");
-                    alert.setContentText("Asiakkaan tiedot poistettu tietokannasta.");
-                    alert.showAndWait();
-                    this.m_asiakas = null;
-                }
-
-                return;
+            if (vastaus.get() == ButtonType.OK) {
+                m_asiakas.poistaAsiakas (m_conn);
+                Asiakas_poistettu = true;
             }
+        } catch (SQLException se) {
+            // SQL virheet
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen poisto");
+            alert.setHeaderText("Results:");
+            alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
+            alert.showAndWait();
 
-            if (Asiakas_poistettu) {
-                this.asiakasID.setText("");
-                this.etunimi.setText("");
-                this.sukunimi.setText("");
-                this.osoite.setText("");
-                alert = new Alert(AlertType.INFORMATION);
+            se.printStackTrace();
+        } catch (Exception e) {
+            // muut virheet
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Asiakkaan tietojen poisto");
+            alert.setHeaderText("Results:");
+            alert.setContentText("Asiakkaan tietojen poistaminen ei onnistu.");
+            alert.showAndWait();
+
+            e.printStackTrace();
+        } finally {
+            if (Asiakas_poistettu == true) { // ainoastaan, jos vahvistettiin ja poisto onnistui
+                asiakasID.setText("");
+                etunimi.setText("");
+                sukunimi.setText("");
+                osoite.setText("");
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Asiakkaan tietojen poisto");
                 alert.setHeaderText("Results:");
                 alert.setContentText("Asiakkaan tiedot poistettu tietokannasta.");
                 alert.showAndWait();
-                this.m_asiakas = null;
-            }
 
+                m_asiakas = null;
+            }
         }
+
+
     }
+
 
     @FXML
+    public Button closeButton;
+    @FXML
     public void handleCloseButtonAction(ActionEvent event) {
-        Stage stage = (Stage)this.closeButton.getScene().getWindow();
+        Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
-
         try {
-            this.sulje_kanta();
-        } catch (SQLException var4) {
+            sulje_kanta();
+        } catch (SQLException se) {
+            // SQL virheet
             System.out.println("Tapahtui tietokantavirhe tietokantaa suljettaessa.");
-        } catch (Exception var5) {
+            //	JOptionPane.showMessageDialog(null, "Tapahtui tietokantavirhe tietokantaa suljettaessa.", "Tietokantavirhe", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            // muut virheet
             System.out.println("Tapahtui virhe tietokantaa suljettaessa.");
+            //	JOptionPane.showMessageDialog(null, "Tapahtui virhe tietokantaa suljettaessa.", "Virhe", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
+
+
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.yhdista();
-        } catch (SQLException var4) {
+            yhdista();
+        } catch (SQLException se) {
+            // SQL virheet
             System.out.println("Tapahtui tietokantavirhe tietokantaa avattaessa.");
-        } catch (Exception var5) {
+            //JOptionPane.showMessageDialog(null, "Tapahtui virhe tietokantaa avattaessa.", "Tietokantavirhe", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            // JDBC virheet
             System.out.println("Tapahtui JDBCvirhe tietokantaa avattaessa.");
+            //JOptionPane.showMessageDialog(null, "Tapahtui JDBCvirhe tietokantaa avattaessa.", "Tietokantavirhe", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public void yhdista() throws SQLException, Exception {
-        this.m_conn = null;
-        String url = "jdbc:mariadb://localhost:3306/ohjtu";
-
+        m_conn = null;
+        String url = "jdbc:mariadb://localhost:3306/ohjtu"; // palvelin = localhost, :portti annettu asennettaessa, tietokannan nimi
         try {
-            this.m_conn = DriverManager.getConnection(url, "root", "eetu");
-        } catch (SQLException var3) {
-            this.m_conn = null;
-            throw var3;
-        } catch (Exception var4) {
-            throw var4;
+            // yhteys kantaan, kayttaja = root, salasana = ohjelmointi
+            m_conn= DriverManager.getConnection(url,"root", "eetu");
         }
+        catch (SQLException e) { // tietokantaan ei saada yhteyttä
+            m_conn = null;
+            throw e;
+        }
+        catch (Exception e ) { // JDBC ajuria ei löydy
+            throw e;
+        }
+
+
+
     }
 
     public void sulje_kanta() throws SQLException, Exception {
+        // suljetaan
         try {
-            this.m_conn.close();
-        } catch (SQLException var2) {
-            throw var2;
-        } catch (Exception var3) {
-            throw var3;
+            // sulje yhteys kantaan
+            m_conn.close ();
         }
+        catch (SQLException e) { // tietokantavirhe
+            throw e;
+        }
+        catch (Exception e ) { // muu virhe tapahtui
+            throw e;
+        }
+
     }
+
 }
