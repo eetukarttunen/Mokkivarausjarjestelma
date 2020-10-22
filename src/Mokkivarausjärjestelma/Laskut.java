@@ -1,4 +1,4 @@
-package sample;
+package Mokkivarausjärjestelma;
 
 import java.sql.*;
 import java.lang.*;

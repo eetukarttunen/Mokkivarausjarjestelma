@@ -1,4 +1,4 @@
-package sample;
+package Mokkivarausjärjestelma;
 
 /**
  * Eetu Karttunen

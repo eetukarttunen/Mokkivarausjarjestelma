@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="660.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LaskutPopupController">
+<BorderPane prefHeight="660.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Mokkivarausjärjestelma.LaskutPopupController">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <left>

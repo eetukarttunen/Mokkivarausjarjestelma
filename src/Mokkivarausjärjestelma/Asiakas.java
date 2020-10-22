@@ -1,4 +1,4 @@
-package sample;
+package Mokkivarausjärjestelma;
 
 /**
  * Asiakas- luokka

@@ -1,4 +1,4 @@
-package sample;
+package Mokkivarausjärjestelma;
 
 //
 // Source code recreated from a .class file by IntelliJ IDEA
