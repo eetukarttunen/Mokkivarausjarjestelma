@@ -419,7 +419,7 @@ public class ToimipisteController implements Initializable {
         String url = "jdbc:mariadb://localhost:3306/ohjtu";
 
         try {
-            this.m_conn = DriverManager.getConnection(url, "root", "eetu");
+            // Tällä yhteys,keksi ja lisää itse salasanasi this.m_conn = DriverManager.getConnection(url, "", "");
         } catch (SQLException var3) {
             this.m_conn = null;
             throw var3;

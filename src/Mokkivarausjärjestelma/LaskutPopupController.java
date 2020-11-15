@@ -439,8 +439,8 @@ public class LaskutPopupController implements Initializable {
         m_conn = null;
         String url = "jdbc:mariadb://localhost:3306/ohjtu"; // palvelin = localhost, :portti annettu asennettaessa, tietokannan nimi
         try {
-            // yhteys kantaan, kayttaja = root, salasana = ohjelmointi
-            m_conn= DriverManager.getConnection(url,"root", "eetu");
+
+            // Yhteys tietokantaan, keksi oma salasanasi m_conn= DriverManager.getConnection(url,"", "");
         }
         catch (SQLException e) { // tietokantaan ei saada yhteyttä
             m_conn = null;
